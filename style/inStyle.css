@@ -427,6 +427,10 @@ table {
   }
 }
 
+.otchNav, .invNav {
+  display: none;
+}
+
 /*Элементы формы*/
 
 input {

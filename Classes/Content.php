@@ -88,4 +88,7 @@ class Content {
     return $this->connect->getColumnTable('logs');
   }
 
+  public function updatePage($id, $value){
+    return $this->connect->setDataTable('pages', 'content', $value, "id='".$id ."'");
+  }
 }

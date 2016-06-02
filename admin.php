@@ -1,3 +1,7 @@
+<?php
+require_once 'Classes/db_connect.php';
+use DataBase\Connect as conn;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,21 +20,60 @@
     }
     $(function() {
       $("#editor").wysibb(wbbOpt);
-    })
+    });
   </script>
 </head>
 <body>
 
 <?php
+
+
+if(isset($_GET['page'])):
+  $connect = new conn('InvRus');
+  
+  $art = $_GET['page'];
+  $page = $connect->getRowTable('pages', "id='".$art."'");
+  $name = $page[0]['title'];
+  $content = $page[0]['content'];
+?>
+
+  <h1><?php echo $name; ?></h1>
+  <span id="pageContent" style="display: none;"><?php echo $content; ?></span>
+  <span id="article" style="display: none;"><?php echo $art; ?></span>
+  <textarea id="editor" style="width: 100%; height: 500px;"></textarea>
+  <button id="updatePage">Оновити</button>
+
+  <script>
+    $(document).ready(function () {
+      $('.wysibb-text-editor').html($('#pageContent').html());
+    });
+
+    $('#updatePage').click(function () {
+      $.post(
+        'Classes/api.php',
+        {
+          s:'updatePage',
+          id:$('#article').html(),
+          content:$('.wysibb-text-editor').html()
+        },
+        function (data) {
+          alert(data);
+        }
+      );
+    });
+
+  </script>
+<?php
+else:
   if (isset($_COOKIE['user'])):
     $get_cockie = unserialize($_COOKIE['user']);
 
     if($get_cockie['admin'] == 1):
   
-      require_once 'Classes/Content.php';
       require_once 'Classes/User.php';
-      $Content = new Content();
       $UserObj = new User();
+      require_once 'Classes/Content.php';
+      $Content = new Content();
     
       $types = $Content->getNewsTypes();
       $news = $Content->getAllNews();
@@ -40,6 +83,7 @@
     <div class="adminNav">
       <div id="newsBtn"><button><i class="material-icons">create</i></button><p>Новости</p></div>
       <div id="logsBtn"><button><i class="material-icons">attach_money</i></button><p>История платежей</p></div>
+      <div id="pageBtn"><button><i class="material-icons">pages</i></button><p>Страницы</p></div>
     </div>
     <div id="adminContents">
       <div class="adminBlock" id="news">
@@ -146,9 +190,73 @@
           </tbody>
         </table>
       </div>
+
+      <div class="adminBlock" id="pages">
+        <div class="adminNav">
+          <div id="otch"><button><i class="material-icons">explicit</i></button><p>Отечественное производство</p></div>
+          <div id="inv"><button><i class="material-icons">explicit</i></button><p>InvRus</p></div>
+        </div>
+
+        <div class="adminNav otchNav">
+          <div id="neft">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=neft" target="_blank">Нефть</a>
+          </div>
+          <div id="gas">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=gas" target="_blank">Газ</a>
+          </div>
+          <div id="build">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=build" target="_blank">Строительство</a>
+          </div>
+          <div id="industr">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=industr" target="_blank">Производство</a>
+          </div>
+          <div id="agrar">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=agrar" target="_blank">Аграрии</a>
+          </div>
+          <div id="finance">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=finance" target="_blank">Финансы</a>
+          </div>
+        </div>
+
+        <div class="adminNav invNav">
+          <div id="about">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=about" target="_blank">О нас</a>
+          </div>
+          <div id="license">
+            <button>
+              <i class="material-icons">explicit</i>
+            </button>
+            <a href="admin.php?page=license" target="_blank">Лицензии</a>
+          </div>
+        </div>
+
+      </div>
     </div>
     
     <script>
+
+
       $('#newsBtn').click(function () {
         $('.adminBlock').each(function () {
           $(this).css({'display':'none'});
@@ -252,9 +360,28 @@
         });
         $('#logs').css({'display':'block'});
       });
+      
+      $('#pageBtn').click(function () {
+        $('.adminBlock').each(function () {
+          $(this).css({'display':'none'});
+        });
+        $('#pages').css({'display':'block'});
+      });
+
+      $('#otch').click(function () {
+        $('.invNav').css({'display':'none'});
+        $('.otchNav').css({'display':'block'});
+      });
+
+      $('#inv').click(function () {
+        $('.otchNav').css({'display':'none'});
+        $('.invNav').css({'display':'block'});
+      });
+      
     
     </script>
   <?php endif; ?>
+<?php endif; ?>
 <?php endif; ?>
 </body>
 </html>

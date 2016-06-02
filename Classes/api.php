@@ -50,5 +50,8 @@ if(isset($_POST['s'])){
     case 'updateNewsType':
       $r = $ContentObj->updateNewsType($id, $name);
       break;
+    case 'updatePage':
+      $r = $ContentObj->updatePage($id, $content);
+      break;
   }
 }
