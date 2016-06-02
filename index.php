@@ -65,12 +65,12 @@
     <div class="menuItem">
       <a href="#">Отечественное производство</a>
       <div class="submenu">
-        <a href="#">Нефть</a>
-        <a href="#">Газ</a>
-        <a href="#">Строительство</a>
-        <a href="#">Производство</a>
-        <a href="#">Аграрии</a>
-        <a href="#">Финансы</a>
+        <a href="content.php?page=neft">Нефть</a>
+        <a href="content.php?page=gas">Газ</a>
+        <a href="content.php?page=build">Строительство</a>
+        <a href="content.php?page=industr">Производство</a>
+        <a href="content.php?page=agrar">Аграрии</a>
+        <a href="content.php?page=finance">Финансы</a>
       </div>
     </div>
     <div class="menuItem">
@@ -91,9 +91,9 @@
     <div class="menuItem">
       <a class="last" href="#">InvRus</a>
       <div class="submenu">
-        <a href="#">О нас</a>
+        <a href="content.php?page=about">О нас</a>
         <a href="#">Офисы</a>
-        <a href="#">Лицензии</a>
+        <a href="content.php?page=license">Лицензии</a>
         <a href="#">Обратная связь</a>
       </div>
     </div>
